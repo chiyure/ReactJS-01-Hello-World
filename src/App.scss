@@ -50,8 +50,17 @@ div.layout {
             justify-content: center;
             gap: 20px;
 
-            div.card{
+            div.moduleCard{
                 width: 250px;
+            }
+
+            div.studentCard{
+                width: 200px;
+            }
+
+            div.card{
+                width: 100%;
+                height: 100%;
                 padding: 10px;
                 border: 1px solid lightgray;
                 border-radius: 5px;
