@@ -1,3 +1,5 @@
+import Layout from './components/layout/Layout';
+import { CardContainer, Card } from './components/UI/Card';
 import './App.scss';
 
 function App() {
@@ -236,74 +238,44 @@ function App() {
 
 
   return (
-    <div className="layout">
+    <Layout loggedInUser={loggedInUser}>
+      <h1>Homepage</h1>
 
-      <header>
-        <h1>Basic React Demo</h1>
-        <p className="welcome">Welcome {loggedInUser}</p>
-      </header>
+      <h1>Modules</h1>
+      <CardContainer> 
+        {
+          modulelist.map((module) => {
+            return(
+            <div className="moduleCard" key={module.ModuleCode}>
+              <Card>
+                <p>{module.ModuleCode}</p>
+                <p>{module.ModuleName}</p>
+                <img src={module.ModuleImageURL}/>
+              </Card>
+            </div>
+          );
+          }) //callback function; // card container lives in main and in main has cards
+        }
+      </CardContainer>
 
-      <nav>
-
-        <div className="navItem">
-          <a to="/">Home</a>
-        </div>
-
-        <div className="navItem">
-          <a to="/">Modules</a>
-        </div>
-
-        <div className="navItem">
-          <a to="/">Students</a>
-        </div>
-
-      </nav>
-
-      <main>
-        <h1>Homepage</h1>
-
-        <h1>Modules</h1>
-        <div className="cardContainer"> 
-          {
-            modulelist.map((module) => {
-              return(
-              <div className="moduleCard" key={module.ModuleCode}>
-                <div className="card">
-                  <p>{module.ModuleCode}</p>
-                  <p>{module.ModuleName}</p>
-                  <img src={module.ModuleImageURL}/>
-                </div>
-              </div>
-            )
-            }) //callback function; // card container lives in main and in main has cards
-          }
-        </div>
-
-        <h1>Students</h1>
-        <div className="cardContainer"> 
-          {
-            studentlist.map((student) => {
-              return(
-              <div className="studentCard" key={student.UserEmail}>
-                <div className="card">
-                  <p>{student.UserEmail.substring(0,8)}</p>
-                  <p>{`${student.UserFirstname} ${student.UserLastname}`}</p>
-                  <img src={student.UserImageURL}/>
-                </div>
-              </div>
-            )
-            }) //callback function; // card container lives in main and in main has cards
-          }
-        </div>
-
-      </main>
-
-      <footer>
-        <p className='thankyou'>Thank you for using this system!</p>
-      </footer>
-
-    </div>
-  )
+      <h1>Students</h1>
+      <CardContainer> 
+        {
+          studentlist.map((student) => {
+            return(
+            <div className="studentCard" key={student.UserEmail}>
+              <Card>
+                <p>{student.UserEmail.substring(0,8)}</p>
+                <p>{`${student.UserFirstname} ${student.UserLastname}`}</p>
+                <img src={student.UserImageURL}/>
+              </Card>
+            </div>
+          );
+          }) //callback function; // card container lives in main and in main has cards
+        }
+      </CardContainer>
+    </Layout>
+  );
 }
 
 export default App
