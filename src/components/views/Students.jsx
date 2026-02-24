@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { CardContainer, Card } from "../UI/Card.jsx";
-import "./Students.scss";
+import { CardContainer } from "../UI/Card.jsx";
+import UserCard from "../Entity/User/UserCard.jsx";
+import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
 
-function Students() {
+const Students = () => {
   // INITIALISATION
 
   const newStudent = {
@@ -19,9 +20,9 @@ function Students() {
     UserYearName: "2022-23",
   };
 
-  const myGroupID = 13;
+  const loggedInUserGroup = 13;
   const apiURL = "https://softwarehub.uk/unibase/api";
-  const myGroupEndpoint = `${apiURL}/users/groups/${myGroupID}`;
+  const myGroupEndpoint = `${apiURL}/users/groups/${loggedInUserGroup}`;
 
   // STATE
 
@@ -59,28 +60,15 @@ function Students() {
       ) : (
         <>
           <CardContainer>
-            {
-              students.map((student) => {
-                return (
-                  <div className="studentCard" key={student.UserID}>
-                    <Card>
-                      <p>{student.UserEmail.substring(0, 8)}</p>
-                      <p>{`${student.UserFirstname} ${student.UserLastname}`}</p>
-                      <img
-                        src={student.UserImageURL}
-                        alt={student.UserEmail.substring(0, 8)}
-                      />
-                    </Card>
-                  </div>
-                );
-              }) //callback function; // card container lives in main and in main has cards
-            }
+            {students.map((student) => (
+              <UserCard key={student.UserID} user={student} /> //callback function; // card container lives in main and in main has cards
+            ))}
           </CardContainer>
           <button onClick={() => handleAdd(newStudent)}>Add student</button>
         </>
       )}
     </>
   );
-}
+};
 
 export default Students;
