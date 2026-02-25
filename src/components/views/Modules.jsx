@@ -15,20 +15,20 @@ const Modules = () => {
   const [modules, setModules] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  const apiGet = async (endpoint) => {
+  const apiGET = async (endpoint) => {
     const response = await fetch(endpoint);
     const result = await response.json();
     setModules(result);
   };
 
   useEffect(() => {
-    apiGet(modulesEndpoint);
+    apiGET(modulesEndpoint);
   }, [modulesEndpoint]);
 
-  const apiPost = async (endpoint, record) => {
+  const apiPOST = async (endpoint, record) => {
     // Build a request object
     const request = {
-      method: "Post",
+      method: "POST",
       body: JSON.stringify(record),
       headers: { "Content-Type": "application/json" },
     };
@@ -52,10 +52,10 @@ const Modules = () => {
   };
 
   const handleSubmit = async (module) => {
-    const result = await apiPost(postModulesEndpoint, module);
+    const result = await apiPOST(postModulesEndpoint, module);
     if (result.isSuccess) {
       setShowForm(false);
-      apiGet(modulesEndpoint);
+      apiGET(modulesEndpoint);
     } else alert(`Submission unsuccessful: ${result.message}`);
   };
 

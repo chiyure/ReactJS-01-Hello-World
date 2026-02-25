@@ -28,17 +28,17 @@ const Students = () => {
 
   const [students, setStudents] = useState(null);
 
-  const apiGet = async (endpoint) => {
+  const apiGET = async (endpoint) => {
     const response = await fetch(endpoint);
     const result = await response.json();
     setStudents(result);
   };
 
   useEffect(() => {
-    apiGet(myGroupEndpoint);
+    apiGET(myGroupEndpoint);
   }, [myGroupEndpoint]);
 
-  //apiGet(myGroupEndpoint); continuous loop
+  //apiGET(myGroupEndpoint); continuous loop
 
   // HANDLERS
 

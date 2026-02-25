@@ -43,18 +43,18 @@ const ModuleForm = ({ onSubmit, onCancel }) => {
   const [years, setYears] = useState(null);
   const [staff, setStaff] = useState(null);
 
-  const apiGet = async (endpoint, setState) => {
+  const apiGET = async (endpoint, setState) => {
     const response = await fetch(endpoint);
     const result = await response.json();
     setState(result);
   };
 
   useEffect(() => {
-    apiGet(yearsEndpoint, setYears);
+    apiGET(yearsEndpoint, setYears);
   }, [yearsEndpoint]);
 
   useEffect(() => {
-    apiGet(staffEndpoint, setStaff);
+    apiGET(staffEndpoint, setStaff);
   }, [staffEndpoint]);
 
   // HANDLERS
