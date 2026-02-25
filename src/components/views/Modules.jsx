@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import Spacer from "../UI/Spacer.jsx";
+import Action from "../UI/Actions.jsx";
+import ModuleForm from "../Entity/Module/ModuleForm.jsx";
 import { CardContainer } from "../UI/Card.jsx";
 import ModuleCard from "../Entity/Module/ModuleCard.jsx";
 
@@ -9,6 +12,7 @@ const Modules = () => {
 
   // STATE
   const [modules, setModules] = useState(null);
+  const [showForm, setShowForm] = useState(false);
 
   const apiGet = async (endpoint) => {
     const response = await fetch(endpoint);
@@ -21,20 +25,42 @@ const Modules = () => {
   }, [modulesEndpoint]);
 
   // HANDLERS
+  const handleAdd = () => {
+    setShowForm(true);
+  };
+
+  const handleCancel = () => {
+    setShowForm(false);
+  };
+
   // VIEW
   return (
     //wrap in fragment
     <>
       <h1>Modules</h1>
-      {!modules ? (
-        <p>Loading records ...</p>
-      ) : (
-        <CardContainer>
-          {modules.map((module) => (
-            <ModuleCard key={module.ModuleID} module={module} />
-          ))}
-        </CardContainer>
-      )}
+      <Spacer>
+        {!showForm ? (
+          <Action.Tray>
+            <Action.Add
+              showText
+              buttonText="Add new module"
+              onClick={handleAdd}
+            />
+          </Action.Tray>
+        ) : (
+          <ModuleForm onCancel={handleCancel} />
+        )}
+
+        {!modules ? (
+          <p>Loading records ...</p>
+        ) : (
+          <CardContainer>
+            {modules.map((module) => (
+              <ModuleCard key={module.ModuleID} module={module} />
+            ))}
+          </CardContainer>
+        )}
+      </Spacer>
     </>
   );
 };

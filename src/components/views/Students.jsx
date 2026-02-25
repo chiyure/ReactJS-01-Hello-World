@@ -64,7 +64,6 @@ const Students = () => {
               <UserCard key={student.UserID} user={student} /> //callback function; // card container lives in main and in main has cards
             ))}
           </CardContainer>
-          <button onClick={() => handleAdd(newStudent)}>Add student</button>
         </>
       )}
     </>
