@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import useLoad from "../api/useLoad.js";
+import apiURL from "../api/apiURL.js";
+import API from "../api/API.js";
 import Spacer from "../UI/Spacer.jsx";
 import Action from "../UI/Actions.jsx";
 import ModuleForm from "../Entity/Module/ModuleForm.jsx";
@@ -7,40 +10,12 @@ import ModuleCard from "../Entity/Module/ModuleCard.jsx";
 
 const Modules = () => {
   // INITIALISATION
-  const apiURL = "https://softwarehub.uk/unibase/api";
   const modulesEndpoint = `${apiURL}/modules`;
   const postModulesEndpoint = `${apiURL}/modules`;
 
   // STATE
-  const [modules, setModules] = useState(null);
   const [showForm, setShowForm] = useState(false);
-
-  const apiGET = async (endpoint) => {
-    const response = await fetch(endpoint);
-    const result = await response.json();
-    setModules(result);
-  };
-
-  useEffect(() => {
-    apiGET(modulesEndpoint);
-  }, [modulesEndpoint]);
-
-  const apiPOST = async (endpoint, record) => {
-    // Build a request object
-    const request = {
-      method: "POST",
-      body: JSON.stringify(record),
-      headers: { "Content-Type": "application/json" },
-    };
-
-    // Call the fetch
-    const response = await fetch(endpoint, request);
-    const result = await response.json();
-
-    return response.status >= 200 && response.status < 300
-      ? { isSuccess: true }
-      : { isSuccess: false, message: result.message };
-  };
+  const [modules, loadingMessage] = useLoad(modulesEndpoint);
 
   // HANDLERS
   const handleAdd = () => {
@@ -52,10 +27,10 @@ const Modules = () => {
   };
 
   const handleSubmit = async (module) => {
-    const result = await apiPOST(postModulesEndpoint, module);
+    const result = await API.post(postModulesEndpoint, module);
     if (result.isSuccess) {
       setShowForm(false);
-      apiGET(modulesEndpoint);
+      loadModules(modulesEndpoint);
     } else alert(`Submission unsuccessful: ${result.message}`);
   };
 
@@ -78,7 +53,7 @@ const Modules = () => {
         )}
 
         {!modules ? (
-          <p>Loading records ...</p>
+          <p>{loadingMessage}</p>
         ) : (
           <CardContainer>
             {modules.map((module) => (

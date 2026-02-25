@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import useLoad from "../../api/useLoad.js";
+import apiURL from "../../api/apiURL.js";
+import API from "../../api/API.js";
 import Spacer from "../../UI/Spacer.jsx";
 import Action from "../../UI/Actions.jsx";
 import "./ModuleForm.scss";
@@ -9,7 +12,8 @@ const initialModule = {
   ModuleLevel: null,
   ModuleYearID: null,
   ModuleLeaderID: null,
-  ModuleImageURL: "",
+  ModuleImageURL:
+    "https://images.freeimages.com/images/small-previews/9b8/electronic-components-2-1242738.jpg",
 };
 
 const ModuleForm = ({ onSubmit, onCancel }) => {
@@ -34,28 +38,14 @@ const ModuleForm = ({ onSubmit, onCancel }) => {
     },
   };
 
-  const apiURL = "https://softwarehub.uk/unibase/api";
   const yearsEndpoint = `${apiURL}/years`;
   const staffEndpoint = `${apiURL}/users/staff`;
 
   // STATE
   const [module, setModule] = useState(initialModule);
-  const [years, setYears] = useState(null);
-  const [staff, setStaff] = useState(null);
 
-  const apiGET = async (endpoint, setState) => {
-    const response = await fetch(endpoint);
-    const result = await response.json();
-    setState(result);
-  };
-
-  useEffect(() => {
-    apiGET(yearsEndpoint, setYears);
-  }, [yearsEndpoint]);
-
-  useEffect(() => {
-    apiGET(staffEndpoint, setStaff);
-  }, [staffEndpoint]);
+  const [years, loadingYearsMessage] = useLoad(yearsEndpoint);
+  const [staff, loadingStaffMessage] = useLoad(staffEndpoint);
 
   // HANDLERS
   const handleChange = (event) => {
@@ -108,7 +98,7 @@ const ModuleForm = ({ onSubmit, onCancel }) => {
           <label>
             Module Year
             {!years ? (
-              <p>Loading records ...</p>
+              <p>{loadingYearsMessage}</p>
             ) : (
               <select
                 name="ModuleYearID"
@@ -129,7 +119,7 @@ const ModuleForm = ({ onSubmit, onCancel }) => {
           <label>
             Module Leader
             {!staff ? (
-              <p>Loading records ...</p>
+              <p>{loadingStaffMessage}</p>
             ) : (
               <select
                 name="ModuleLeaderID"
