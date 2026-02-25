@@ -12,7 +12,7 @@ const initialModule = {
   ModuleImageURL: "",
 };
 
-const ModuleForm = ({ onCancel }) => {
+const ModuleForm = ({ onSubmit, onCancel }) => {
   // INITIALISATION
 
   const conformance = {
@@ -63,7 +63,7 @@ const ModuleForm = ({ onCancel }) => {
     setModule({ ...module, [name]: conformance.html2js[name](value) });
   };
 
-  const handleSubmit = () => alert(JSON.stringify(module));
+  const handleSubmit = () => onSubmit(module);
 
   // VIEW
   return (

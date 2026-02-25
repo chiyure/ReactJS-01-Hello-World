@@ -9,6 +9,7 @@ const Modules = () => {
   // INITIALISATION
   const apiURL = "https://softwarehub.uk/unibase/api";
   const modulesEndpoint = `${apiURL}/modules`;
+  const postModulesEndpoint = `${apiURL}/modules`;
 
   // STATE
   const [modules, setModules] = useState(null);
@@ -24,6 +25,23 @@ const Modules = () => {
     apiGet(modulesEndpoint);
   }, [modulesEndpoint]);
 
+  const apiPost = async (endpoint, record) => {
+    // Build a request object
+    const request = {
+      method: "Post",
+      body: JSON.stringify(record),
+      headers: { "Content-Type": "application/json" },
+    };
+
+    // Call the fetch
+    const response = await fetch(endpoint, request);
+    const result = await response.json();
+
+    return response.status >= 200 && response.status < 300
+      ? { isSuccess: true }
+      : { isSuccess: false, message: result.message };
+  };
+
   // HANDLERS
   const handleAdd = () => {
     setShowForm(true);
@@ -31,6 +49,14 @@ const Modules = () => {
 
   const handleCancel = () => {
     setShowForm(false);
+  };
+
+  const handleSubmit = async (module) => {
+    const result = await apiPost(postModulesEndpoint, module);
+    if (result.isSuccess) {
+      setShowForm(false);
+      apiGet(modulesEndpoint);
+    } else alert(`Submission unsuccessful: ${result.message}`);
   };
 
   // VIEW
@@ -48,7 +74,7 @@ const Modules = () => {
             />
           </Action.Tray>
         ) : (
-          <ModuleForm onCancel={handleCancel} />
+          <ModuleForm onSubmit={handleSubmit} onCancel={handleCancel} />
         )}
 
         {!modules ? (
