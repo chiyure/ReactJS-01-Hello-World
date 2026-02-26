@@ -1,5 +1,4 @@
-import '.Component.scss';
-import { defaultExternalConditions } from 'vite';
+import './Component.scss';
 
 const Component = () => {
     // INITIALISATION

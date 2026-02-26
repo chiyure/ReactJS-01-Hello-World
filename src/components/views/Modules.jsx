@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
 import useLoad from "../api/useLoad.js";
 import apiURL from "../api/apiURL.js";
 import API from "../api/API.js";
 import Spacer from "../UI/Spacer.jsx";
+import { Modal, useModal } from "../UI/Modal.jsx";
 import Action from "../UI/Actions.jsx";
 import ModuleForm from "../Entity/Module/ModuleForm.jsx";
 import { CardContainer } from "../UI/Card.jsx";
@@ -14,22 +14,14 @@ const Modules = () => {
   const postModulesEndpoint = `${apiURL}/modules`;
 
   // STATE
-  const [showForm, setShowForm] = useState(false);
   const [modules, loadingMessage] = useLoad(modulesEndpoint);
+  const [isFormOpen, openForm, closeForm] = useModal(false);
 
   // HANDLERS
-  const handleAdd = () => {
-    setShowForm(true);
-  };
-
-  const handleCancel = () => {
-    setShowForm(false);
-  };
-
   const handleSubmit = async (module) => {
     const result = await API.post(postModulesEndpoint, module);
     if (result.isSuccess) {
-      setShowForm(false);
+      closeForm();
       loadModules(modulesEndpoint);
     } else alert(`Submission unsuccessful: ${result.message}`);
   };
@@ -39,18 +31,17 @@ const Modules = () => {
     //wrap in fragment
     <>
       <h1>Modules</h1>
+
+      {isFormOpen && (
+        <Modal title="Add new module">
+          <ModuleForm onSubmit={handleSubmit} onCancel={closeForm} />
+        </Modal>
+      )}
+
       <Spacer>
-        {!showForm ? (
-          <Action.Tray>
-            <Action.Add
-              showText
-              buttonText="Add new module"
-              onClick={handleAdd}
-            />
-          </Action.Tray>
-        ) : (
-          <ModuleForm onSubmit={handleSubmit} onCancel={handleCancel} />
-        )}
+        <Action.Tray>
+          <Action.Add showText buttonText="Add new module" onClick={openForm} />
+        </Action.Tray>
 
         {!modules ? (
           <p>{loadingMessage}</p>
