@@ -1,3 +1,4 @@
+import { useAuth } from "../auth/authContext.jsx";
 import useLoad from "../api/useLoad.js";
 import apiURL from "../api/apiURL.js";
 import API from "../api/API.js";
@@ -10,17 +11,21 @@ import { CardContainer } from "../UI/Card.jsx";
 import ModuleCard from "../Entity/Module/ModuleCard.jsx";
 
 const Modules = () => {
-  // INITIALISATION
-  const modulesEndpoint = `${apiURL}/modules`;
+  // Initialisation
+  const { loggedInUser } = useAuth();
+  const modulesEndpoint =
+    loggedInUser.UserUsertypeID === 1
+      ? `${apiURL}/modules/leader/${loggedInUser.UserID}`
+      : `${apiURL}/modules/users/${loggedInUser.UserID}`;
   const postModulesEndpoint = `${apiURL}/modules`;
 
-  // STATE
+  // State
   const [modules, loadingMessage] = useLoad(modulesEndpoint);
   const [isFormOpen, openForm, closeForm] = useModal(false);
   const [isAlertOpen, alertMessage, openAlert, closeAlert] = useAlert();
   const [isErrorOpen, errorMessage, openError, closeError] = useAlert();
 
-  // HANDLERS
+  // Handlers
   const handleSubmit = async (module) => {
     const result = await API.post(postModulesEndpoint, module);
     if (result.isSuccess) {
@@ -30,7 +35,7 @@ const Modules = () => {
     } else openError(`Submission unsuccessful: ${result.message}`);
   };
 
-  // VIEW
+  // View
   return (
     //wrap in fragment
     <>

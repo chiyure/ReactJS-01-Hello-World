@@ -4,14 +4,9 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   // Initialisation
-  const initialUser = {
-    UserID: 369,
-    UserFirstname: "Zoe",
-    UserUsertypeID: 2,
-  };
 
   // State
-  const [loggedInUser, setLoggedInUser] = useState(initialUser);
+  const [loggedInUser, setLoggedInUser] = useState(null);
 
   // Handlers
   const login = (user) => setLoggedInUser(user);
@@ -19,9 +14,7 @@ export const AuthProvider = ({ children }) => {
 
   // View
   return (
-    <AuthContext value={{ loggedInUser: loggedInUser, login, logout }}>
-      {children}
-    </AuthContext>
+    <AuthContext value={{ loggedInUser: loggedInUser, login, logout }}>{children}</AuthContext>
   );
 };
 
