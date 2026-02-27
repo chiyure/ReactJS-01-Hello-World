@@ -3,17 +3,18 @@ import Navbar from "./Navbar.jsx";
 import Footer from "./Footer.jsx";
 import "./Layout.scss";
 
-function Layout(props) {
+const Layout = ({ children }) => {
   return (
     <div className="layout">
-      <Header loggedInUser={props.loggedInUser} />
+      <Header />
+
       <Navbar />
 
-      <main>{props.children}</main>
+      <main>{children}</main>
 
       <Footer />
     </div>
   );
-}
+};
 
 export default Layout;

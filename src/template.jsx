@@ -1,10 +1,10 @@
 import './Component.scss';
 
 const Component = () => {
-    // INITIALISATION
-    // STATE
-    // HANDLERS
-    // VIEW
+    // Initialisation
+    // State
+    // Handlers
+    // View
     return (
 
     );
