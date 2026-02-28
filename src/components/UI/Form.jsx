@@ -29,27 +29,39 @@ const Form = ({ onSubmit, onCancel, children }) => {
   );
 };
 
-const TextInput = ({ label, name, value, onChange }) => {
+const FormField = ({ label, error, children }) => {
   // Initialisation
   // State
   // Handlers
   // View
   return (
     <label>
-      {label}
-      <input type="text" name={name} value={value} onChange={onChange} />
+      <p className="FormLabel">{label}</p>
+      {children}
+      <p className="FormError">{error}</p>
     </label>
   );
 };
 
-const TextSelect = ({ label, name, value, options, onChange }) => {
+const TextInput = ({ label, name, value, onChange, error }) => {
   // Initialisation
   // State
   // Handlers
   // View
   return (
-    <label>
-      {label}
+    <FormField label={label} error={error}>
+      <input type="text" name={name} value={value} onChange={onChange} />
+    </FormField>
+  );
+};
+
+const TextSelect = ({ label, name, value, options, onChange, error }) => {
+  // Initialisation
+  // State
+  // Handlers
+  // View
+  return (
+    <FormField label={label} error={error}>
       {!options.list ? (
         <p>{options.noOptionsMessage}</p>
       ) : (
@@ -64,24 +76,45 @@ const TextSelect = ({ label, name, value, options, onChange }) => {
           ))}
         </select>
       )}
-    </label>
+    </FormField>
   );
 };
 
-const useForm = (initialRecord, conformance, onSubmit) => {
+const useForm = (initialRecord, conformance, validation, onSubmit) => {
   // Initialisation
   // State
   const [record, setRecord] = useState(initialRecord);
+  const [errors, setErrors] = useState(
+    Object.keys(initialRecord).reduce((accum, key) => ({ ...accum, [key]: null }), {}),
+  );
+
+  const isValidRecord = (record) => {
+    let isRecordValid = true;
+
+    Object.keys(validation.isValid).forEach((key) => {
+      const value = record[key];
+      if (validation.isValid[key](value)) errors[key] = null;
+      else {
+        errors[key] = validation.errorMessage[key];
+        isRecordValid = false;
+      }
+    });
+    return isRecordValid;
+  };
+
   // Handlers
   const handleChange = (event) => {
     const { name, value } = event.target;
     setRecord({ ...record, [name]: conformance.html2js[name](value) });
   };
 
-  const handleSubmit = () => onSubmit(record);
+  const handleSubmit = () => {
+    isValidRecord(record) && onSubmit(record);
+    setErrors({ ...errors });
+  };
 
   // View
-  return [record, handleChange, handleSubmit];
+  return [record, errors, handleChange, handleSubmit];
 };
 
 // Compound component

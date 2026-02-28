@@ -15,7 +15,6 @@ const initialModule = {
 
 const ModuleForm = ({ onSubmit, onCancel }) => {
   // Initialisation
-
   const conformance = {
     js2html: {
       ModuleName: (value) => (value === null ? " " : value),
@@ -35,18 +34,45 @@ const ModuleForm = ({ onSubmit, onCancel }) => {
     },
   };
 
+  const validation = {
+    isValid: {
+      ModuleName: (name) => name && name.length > 8,
+      ModuleCode: (code) => /^\D{2}\d{4}$/.test(code),
+      ModuleLevel: (level) => level > 3 && level < 8,
+      ModuleYearID: (id) => id === null || id > 0,
+      ModuleLeaderID: (id) => id === null || id > 0,
+      ModuleImageURL: (url) =>
+        /^(http|https):\/\/(([a-zA-Z0-9$\-_.+!*'(),;:&=]|%[0-9a-fA-F]{2})+@)?(((25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])){3})|localhost|([a-zA-Z0-9\-\u00C0-\u017F]+\.)+([a-zA-Z]{2,}))(:[0-9]+)?(\/(([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*(\/([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*)*)?(\?([a-zA-Z0-9$\-_.+!*'(),;:@&=/?]|%[0-9a-fA-F]{2})*)?(#([a-zA-Z0-9$\-_.+!*'(),;:@&=/?]|%[0-9a-fA-F]{2})*)?)?$/.test(
+          url,
+        ),
+    },
+
+    errorMessage: {
+      ModuleName: "Module name is too short",
+      ModuleCode: "Module code is not in a valid format",
+      ModuleLevel: "Invalid module level",
+      ModuleYearID: "Invalid delivery year has been selected",
+      ModuleLeaderID: "Invalid module leader has been selected",
+      ModuleImageURL: "The URL entered is not a valid URL string",
+    },
+  };
+
   const yearsEndpoint = `${apiURL}/years`;
   const staffEndpoint = `${apiURL}/users/staff`;
 
   // State
-  const [module, handleChange, handleSubmit] = Form.useForm(initialModule, conformance, onSubmit);
+  const [module, errors, handleChange, handleSubmit] = Form.useForm(
+    initialModule,
+    conformance,
+    validation,
+    onSubmit,
+  );
   const [years, loadingYearsMessage] = useLoad(yearsEndpoint);
   const [staff, loadingStaffMessage] = useLoad(staffEndpoint);
 
   // Handlers
 
   // View
-
   const levelOptions = {
     unselected: { value: "0", label: "No level selected" },
     list: [3, 4, 5, 6, 7].map((level) => ({
@@ -79,6 +105,7 @@ const ModuleForm = ({ onSubmit, onCancel }) => {
         name="ModuleName"
         value={conformance.js2html.ModuleName(module.ModuleName)}
         onChange={handleChange}
+        error={errors.ModuleName}
       />
 
       <Form.TextInput
@@ -86,6 +113,7 @@ const ModuleForm = ({ onSubmit, onCancel }) => {
         name="ModuleCode"
         value={conformance.js2html.ModuleCode(module.ModuleCode)}
         onChange={handleChange}
+        error={errors.ModuleCode}
       />
 
       <Form.TextSelect
@@ -94,6 +122,7 @@ const ModuleForm = ({ onSubmit, onCancel }) => {
         value={conformance.js2html.ModuleLevel(module.ModuleLevel)}
         options={levelOptions}
         onChange={handleChange}
+        error={errors.ModuleLevel}
       />
 
       <Form.TextSelect
@@ -102,6 +131,7 @@ const ModuleForm = ({ onSubmit, onCancel }) => {
         value={conformance.js2html.ModuleYearID(module.ModuleYearID)}
         options={yearOptions}
         onChange={handleChange}
+        error={errors.ModuleYearID}
       />
 
       <Form.TextSelect
@@ -110,6 +140,7 @@ const ModuleForm = ({ onSubmit, onCancel }) => {
         value={conformance.js2html.ModuleLeaderID(module.ModuleLeaderID)}
         options={leaderOptions}
         onChange={handleChange}
+        error={errors.ModuleLeaderID}
       />
 
       <Form.TextInput
@@ -117,6 +148,7 @@ const ModuleForm = ({ onSubmit, onCancel }) => {
         name="ModuleImageURL"
         value={conformance.js2html.ModuleImageURL(module.ModuleImageURL)}
         onChange={handleChange}
+        error={errors.ModuleImageURL}
       />
     </Form>
   );

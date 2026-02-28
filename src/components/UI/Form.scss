@@ -1,3 +1,6 @@
+$BorderGrey: LightGrey;
+$DarkRose: #d96c7c;
+
 div.Form {
     min-width: 400px;
     border: 1px solid LightGrey;
@@ -14,34 +17,44 @@ div.Form {
             width: 100%;
         }
 
+            label {
 
-        $BorderGrey: LightGrey;
+                p.FormLabel {
+                    font-weight: 500;
+                }
 
-        select, input {
-            padding: 3px;
-            margin: 1px 0;
-            font-size: 100%;
-            border-radius: 0px;
-            border: 1px solid $BorderGrey;
-            background: White;
+                p.FormError {
+                    font-size: 90%;
+                    color: $DarkRose;
+                }
 
-            &:hover,
-            &:focus {
-                outline-width: 1px;
-                outline-style: solid;
-                border-width: 1px;
-                border-style: solid;
-            }
+            select, input {
+                padding: 3px;
+                margin: 1px 0;
+                font-size: 100%;
+                border-radius: 0px;
+                border: 1px solid $BorderGrey;
+                background: White;
 
-            &:hover {
-                border-color: $BorderGrey;
-                border-color: $BorderGrey;
-            } 
+                &:hover,
+                &:focus {
+                    outline-width: 1px;
+                    outline-style: solid;
+                    border-width: 1px;
+                    border-style: solid;
+                }
 
-            &:focus {
-                border-color: $DarkGreen;
-                outline-color: $DarkGreen;
+                &:hover {
+                    border-color: $BorderGrey;
+                    border-color: $BorderGrey;
+                } 
+
+                &:focus {
+                    border-color: $DarkGreen;
+                    outline-color: $DarkGreen;
+                }
             }
         }
     }
 }
+    
