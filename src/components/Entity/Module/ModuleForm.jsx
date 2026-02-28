@@ -46,94 +46,78 @@ const ModuleForm = ({ onSubmit, onCancel }) => {
   // Handlers
 
   // View
+
+  const levelOptions = {
+    unselected: { value: "0", label: "No level selected" },
+    list: [3, 4, 5, 6, 7].map((level) => ({
+      value: level,
+      label: `Level ${level}`,
+    })),
+  };
+
+  const yearOptions = {
+    noOptionsMessage: loadingYearsMessage,
+    unselected: { value: "0", label: "No year selected" },
+    list: years && years.map((year) => ({ value: year.YearID, label: year.YearName })),
+  };
+
+  const leaderOptions = {
+    noOptionsMessage: loadingStaffMessage,
+    unselected: { value: "0", label: "No leader selected" },
+    list:
+      staff &&
+      staff.map((user) => ({
+        value: user.UserID,
+        label: `${user.UserFirstname} ${user.UserLastname}`,
+      })),
+  };
+
   return (
     <Form onSubmit={handleSubmit} onCancel={onCancel}>
-      <label>
-        Module Name
-        <input
-          type="text"
-          name="ModuleName"
-          value={conformance.js2html.ModuleName(module.ModuleName)}
-          onChange={handleChange}
-        />
-      </label>
+      <Form.TextInput
+        label="Module Name"
+        name="ModuleName"
+        value={conformance.js2html.ModuleName(module.ModuleName)}
+        onChange={handleChange}
+      />
 
-      <label>
-        Module Code
-        <input
-          type="text"
-          name="ModuleCode"
-          value={conformance.js2html.ModuleCode(module.ModuleCode)}
-          onChange={handleChange}
-        />
-      </label>
+      <Form.TextInput
+        label="Module Code"
+        name="ModuleCode"
+        value={conformance.js2html.ModuleCode(module.ModuleCode)}
+        onChange={handleChange}
+      />
 
-      <label>
-        Module Level
-        <select
-          name="ModuleLevel"
-          value={conformance.js2html.ModuleLevel(module.ModuleLevel)}
-          onChange={handleChange}>
-          <option value="0" hidden>
-            No level selected
-          </option>
-          {[3, 4, 5, 6, 7].map((level) => (
-            <option key={level}>{level}</option>
-          ))}
-        </select>
-      </label>
+      <Form.TextSelect
+        label="Module Level"
+        name="ModuleLevel"
+        value={conformance.js2html.ModuleLevel(module.ModuleLevel)}
+        options={levelOptions}
+        onChange={handleChange}
+      />
 
-      <label>
-        Module Year
-        {!years ? (
-          <p>{loadingYearsMessage}</p>
-        ) : (
-          <select
-            name="ModuleYearID"
-            value={conformance.js2html.ModuleYearID(module.ModuleYearID)}
-            onChange={handleChange}>
-            <option value="0" hidden>
-              No year selected
-            </option>
-            {years.map((year) => (
-              <option key={year.YearID} value={year.YearID}>
-                {year.YearName}
-              </option>
-            ))}
-          </select>
-        )}
-      </label>
+      <Form.TextSelect
+        label="Module Year"
+        name="ModuleYearID"
+        value={conformance.js2html.ModuleYearID(module.ModuleYearID)}
+        options={yearOptions}
+        onChange={handleChange}
+      />
 
-      <label>
-        Module Leader
-        {!staff ? (
-          <p>{loadingStaffMessage}</p>
-        ) : (
-          <select
-            name="ModuleLeaderID"
-            value={conformance.js2html.ModuleLeaderID(module.ModuleLeaderID)}
-            onChange={handleChange}>
-            <option value="0" hidden>
-              No user selected
-            </option>
-            {staff.map((user) => (
-              <option key={user.UserID} value={user.UserID}>
-                {`${user.UserFirstname} ${user.UserLastname}`}
-              </option>
-            ))}
-          </select>
-        )}
-      </label>
+      <Form.TextSelect
+        label="Module Leader"
+        name="ModuleLeaderID"
+        value={conformance.js2html.ModuleLeaderID(module.ModuleLeaderID)}
+        options={leaderOptions}
+        onChange={handleChange}
+      />
 
-      <label>
-        Module Image
-        <input
-          type="text"
-          name="ModuleImageURL"
-          value={conformance.js2html.ModuleImageURL(module.ModuleImageURL)}
-          onChange={handleChange}
-        />
-      </label>
+      <Form.TextInput
+        label="Module Image"
+        name="ModuleImageURL"
+        value={conformance.js2html.ModuleImageURL(module.ModuleImageURL)}
+        onChange={handleChange}
+      />
     </Form>
   );
 };

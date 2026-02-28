@@ -20,7 +20,7 @@ const Modules = () => {
   const postModulesEndpoint = `${apiURL}/modules`;
 
   // State
-  const [modules, loadingMessage] = useLoad(modulesEndpoint);
+  const [modules, loadingMessage, loadModules] = useLoad(modulesEndpoint);
   const [isFormOpen, openForm, closeForm] = useModal(false);
   const [isAlertOpen, alertMessage, openAlert, closeAlert] = useAlert();
   const [isErrorOpen, errorMessage, openError, closeError] = useAlert();

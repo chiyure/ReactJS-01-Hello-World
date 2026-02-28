@@ -37,7 +37,7 @@ export const Confirm = ({ message, onConfirm, onDismiss }) => {
       <Spacer>
         <p className="alertMessage">{message}</p>
         <Action.Tray>
-          <Action.Yes showText onClick={onConfirm} />
+          <Action.Yes showText onClick={handleConfirm} />
           <Action.Dismiss showText onClick={onDismiss} />
         </Action.Tray>
       </Spacer>
