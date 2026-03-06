@@ -38,7 +38,7 @@ const ModuleForm = ({ onSubmit, onCancel }) => {
     isValid: {
       ModuleName: (name) => name && name.length > 8,
       ModuleCode: (code) => /^\D{2}\d{4}$/.test(code),
-      ModuleLevel: (level) => level > 3 && level < 8,
+      ModuleLevel: (level) => level > 2 && level < 8,
       ModuleYearID: (id) => id === null || id > 0,
       ModuleLeaderID: (id) => id === null || id > 0,
       ModuleImageURL: (url) =>
