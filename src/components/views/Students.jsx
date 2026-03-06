@@ -2,6 +2,7 @@ import { useAuth } from "../auth/authContext.jsx";
 import useLoad from "../api/useLoad.js";
 import apiURL from "../api/apiURL.js";
 import { Modal, useModal } from "../UI/Modal.jsx";
+import UserForm from "../Entity/User/UserForm.jsx";
 import Spacer from "../UI/Spacer.jsx";
 import Action from "../UI/Actions.jsx";
 import { CardContainer } from "../UI/Card.jsx";
@@ -21,6 +22,7 @@ const Students = () => {
   const [isFormOpen, openForm, closeForm] = useModal(false);
 
   // Handlers
+  const handleSubmit = (user) => console.log(JSON.stringify(user));
 
   // View
 
@@ -30,7 +32,7 @@ const Students = () => {
 
       {isFormOpen && (
         <Modal title="Add new user">
-          <p>User form</p>
+          <UserForm onSubmit={handleSubmit} onCancel={closeForm} />
         </Modal>
       )}
       <Spacer>
