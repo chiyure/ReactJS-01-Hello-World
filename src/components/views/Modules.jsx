@@ -30,7 +30,7 @@ const Modules = () => {
     const result = await API.post(postModulesEndpoint, module);
     if (result.isSuccess) {
       closeForm();
-      loadModules(modulesEndpoint);
+      await loadModules(modulesEndpoint);
       openAlert("Submission successful");
     } else openError(`Submission unsuccessful: ${result.message}`);
   };
